@@ -1,0 +1,4 @@
+pigpio
+piServoCtl
+picamera
+opencv-python

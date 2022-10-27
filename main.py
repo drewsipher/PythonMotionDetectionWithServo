@@ -1,4 +1,3 @@
-from queue import Empty
 import pigpio
 import time
 import cv2 as cv
@@ -29,6 +28,7 @@ servo1 = 12
 servo2 = 13
 
 motion_detected = False
+exitProg = False
 
 currentChannel = None
 
@@ -110,7 +110,6 @@ def cameraDetectionThread():
     # Minimum boxed area for a detected motion to count as actual motion
     # Use to filter out noise or small objects
     MIN_SIZE_FOR_MOVEMENT = 2000
-
     
     try:
         if not cap.isOpened():
@@ -192,9 +191,19 @@ def cameraDetectionThread():
             cv.imshow("frame", np.hstack((frame_delta, frame)))
 
             if cv.waitKey(1) == ord('q'):
+                cap.release()
+                cv.destroyAllWindows()
+                global exitProg
+                exitProg = True
                 break
     finally : 
         cap.release()
+
+def exitProgram():
+    close_mouth()
+    global pi
+    pi.stop()
+    
     
 
 
@@ -203,11 +212,13 @@ setupPins();
 camThread = threading.Thread(target=cameraDetectionThread)
 camThread.start()
 
+while exitProg == False :
+    time.sleep(1)
+
+exitProgram()
 #pick random sounds and wait a random amount
 #do not block motion detection
 
-# When everything done, release the capture
-cv.destroyAllWindows()
 
     
 

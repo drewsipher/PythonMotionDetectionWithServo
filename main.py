@@ -14,13 +14,14 @@ sound2 = mixer.Sound('./wav/02.wav')
 sound3 = mixer.Sound('./wav/03.wav')
 sound4 = mixer.Sound('./wav/04.wav')
 sound5 = mixer.Sound('./wav/05.wav')
-scream1 = mixer.Sound('./wav/06.wav')
+scream6 = mixer.Sound('./wav/06.wav')
 scream7 = mixer.Sound('./wav/07.wav')
 scream8 = mixer.Sound('./wav/08.wav')
 scream9 = mixer.Sound('./wav/09.wav')
 warnSound = mixer.Sound('./wav/10.wav')
 
 sounds = [sound1, sound2, sound3, sound4, sound5]
+screams = [scream6, scream7, scream8, scream9]
 
 mouth_open = 34
 mouth_closed = 150
@@ -74,8 +75,15 @@ def playSound(sound):
 
 def motion():
     global motion_detected
+    previous_detected = motion_detected
     motion_detected = True;
     print("motion")
+    if previous_detected == False:
+        playSound(warnSound)
+    else :
+        global screams
+        scream = random.choice(screams)
+        playSound(scream)
     
     global movement_persistent_counter
     movement_persistent_counter = MOVEMENT_DETECTED_PERSISTENCE

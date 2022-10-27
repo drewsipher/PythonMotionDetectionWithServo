@@ -76,10 +76,7 @@ def motion():
     global motion_detected
     motion_detected = True;
     print("motion")
-    global sounds
-    sound = random.choice(sounds)
     
-    playSound(sound)
     global movement_persistent_counter
     movement_persistent_counter = MOVEMENT_DETECTED_PERSISTENCE
     x = threading.Thread(target=open_mouth)
@@ -213,12 +210,15 @@ camThread = threading.Thread(target=cameraDetectionThread)
 camThread.start()
 
 while exitProg == False :
-    time.sleep(1)
+    #pick random sounds and wait a random amount
+    #do not block motion detection
+    if motion_detected == False :
+        sleepAmount = random.uniform(2,8)
+        time.sleep(sleepAmount)
+        sound = random.choice(sounds)
+        playSound(sound)
+    else :
+        time.sleep(0.1)
+
 
 exitProgram()
-#pick random sounds and wait a random amount
-#do not block motion detection
-
-
-    
-

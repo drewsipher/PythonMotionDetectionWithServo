@@ -2,3 +2,4 @@ pigpio
 piServoCtl
 picamera
 opencv-python
+pygame
